@@ -58,7 +58,49 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  const audioFileMap = {}
+  const audioFiles = document.getElementsByTagName('audio')
+  Array.from(audioFiles).forEach(audio => audioFileMap[audio.dataset.key] = audio)
 
+  const keyDOMElMap = {}
+  const keys = document.getElementsByClassName('key')
+  const keysArr = Array.from(keys)
+  keysArr.forEach(child => {
+    keyDOMElMap[child.dataset.key] = child
+    attachEventListenerToPlay(child, 'click', () => playNote(child))
+  })
+
+  attachEventListenerToPlay(window, 'keypress', (e) => {
+    keyDOMElMap[e.charCode] && keyDOMElMap[e.charCode].click()
+  })
+
+  // ***************************
+
+  function attachEventListenerToPlay(DOMElement, type, cb) {
+    DOMElement.addEventListener(type, cb)
+  }
+
+  function playNote(DOMElement) {
+    addVisualEffect()
+    playAudio()
+
+    // ********************************
+    function addVisualEffect () {
+      DOMElement.classList.toggle('playing')
+      // setTimeout(() => DOMElement.classList.toggle('playing'), 100)
+      DOMElement.addEventListener('transitionend', (e) => {
+        if (e.propertyName != 'transform') return
+        DOMElement.classList.remove('playing')
+      })
+    }
+    function playAudio() {
+      const audio = audioFileMap[DOMElement.dataset.key]
+      audio.currentTime = 0 
+      audio.play()
+    }
+  }
+
+  
 </script>
 
 
