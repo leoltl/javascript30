@@ -62,13 +62,42 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform: rotate(90deg);
+      transform-origin: 100%;
+      transition: 0.05s;
+    }
+
+    .hour-hand {
+      background: white;
+    }
+
+    .second-hand {
+      background: red;
     }
 
   </style>
 
   <script>
+    function setHand() {
+    const time = new Date()
+      function calculateDegree(time) {
+        const [h, m, s] = [time.getHours() > 12 ? time.getHours() - 12 : time.getHours(), time.getMinutes() ,time.getSeconds()]
+        const secondsHandDegree = s * 6
+        const minutesHandDegree = m * 6 + ( (s / 60) / 6)
+        const hoursHandDegree = (h * 30) + ( (m / 60) / 30) + ( (s / (60 * 60)) / 30)
+        return [hoursHandDegree, minutesHandDegree, secondsHandDegree]
+      }
 
-
+      const [hd, md, sd] = calculateDegree(time)
+      const secondHand = document.querySelector('.second-hand')
+      const minHand = document.querySelector('.min-hand')
+      const hourHand = document.querySelector('.hour-hand')
+      secondHand.style.transform = `rotate(${sd + 90}deg)`
+      minHand.style.transform = `rotate(${md + 90}deg)`
+      hourHand.style.transform = `rotate(${hd + 90}deg)`
+    }
+    setInterval(setHand, 1000)
+    
   </script>
 </body>
 </html>
