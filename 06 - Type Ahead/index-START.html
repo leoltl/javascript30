@@ -15,8 +15,46 @@
     </ul>
   </form>
 <script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  
+  async function main() {
+    const raw = await fetch(endpoint)
+    const data = await raw.json()
 
+    const inputBox = document.querySelector('input')
+    const suggestions = document.querySelector('.suggestions')
+    inputBox.addEventListener('input', displayResult)
+
+
+    // *********************************
+    function displayResult(e) {
+      suggestions.innerText = ''
+      const matches = findMatch(e.target.value);
+      const boundedBuildResultHtml = buildResultHtml.bind(this)
+      suggestions.innerHTML = boundedBuildResultHtml(matches)
+    }
+
+    function findMatch(searchTerm) {
+      const regex = new RegExp(searchTerm, 'gi');
+      return data.filter(place => {
+        return place.city.match(regex) || place.state.match(regex)
+      })
+    }
+
+    function buildResultHtml(results) {
+      const regex = new RegExp(this.value, 'gi')
+      return results.map(r => {
+          const cityName = r.city.replace(regex, `<span class="hl">${this.value}</span>`);
+          const stateName = r.state.replace(regex, `<span class="hl">${this.value}</span>`);
+          return `<li>
+            <span class="name">${cityName}, ${stateName}</span>
+            <span class="population">${r.population}</span>
+          </li>`
+          }).join('')
+    }
+  }
+
+  main()
 </script>
 </body>
 </html>
