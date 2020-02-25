@@ -43,6 +43,23 @@
   </div>
 
   <script>
+
+    const images = document.querySelectorAll('.slide-in')
+    const debouncedCheck = debounce((e) => {
+      images.forEach(img => isInView(img))
+    })
+    window.addEventListener('scroll', debouncedCheck)
+
+    // ******************************
+    function isInView(el) {
+      const posInfo = el.getBoundingClientRect()
+      if (posInfo.bottom > 0 && posInfo.top + (posInfo.height / 2) <= window.innerHeight) {
+        el.classList.add('active')
+      } else {
+        el.classList.remove('active')
+      }
+    }
+
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
@@ -57,7 +74,6 @@
         if (callNow) func.apply(context, args);
       };
     }
-
   </script>
 
   <style>

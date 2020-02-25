@@ -7,6 +7,17 @@
 </head>
 <body>
 <script>
+  let keySequence = "";
+  window.addEventListener('keyup', addToKeySequence)
+  function addToKeySequence(e) {
+    keySequence += `${e.keyCode}`
+    if (keySequence == '38384040') {
+      document.querySelector('body').innerText = 'You found me'
+      cornify_add();
+    }
+  }
+  setInterval(() => keySequence = '', 5000)
+
 </script>
 </body>
 </html>
