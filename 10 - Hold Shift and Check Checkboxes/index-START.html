@@ -96,6 +96,29 @@
   </div>
 
 <script>
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]')
+  let startY, endY;
+
+  checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck))
+
+  function handleCheck(e) {
+    if (e.shiftKey && startY) {
+      endY = e.clientY;
+      checkCheckboxes()
+    } else {
+      startY = e.clientY;
+    }
+  }
+
+  function checkCheckboxes() {
+    checkboxes.forEach(cb => {
+      console.log(cb.offsetTop,startY,endY )
+      if (cb.offsetTop >= startY && cb.offsetTop <= endY || cb.offsetTop <= startY && cb.offsetTop >= endY) {
+        cb.checked = true
+      }
+    })
+    startY = endY = undefined
+  }
 </script>
 </body>
 </html>
