@@ -10,6 +10,15 @@ body {
   margin: 0;
 }
 
+.fixed-nav nav {
+  position: fixed;
+  box-shadow: 0 5px rgba(0,0,0,0.1);
+}
+
+.fixed-nav li.logo {
+  max-width: 500px;
+}
+
 *, *:before, *:after {
   box-sizing: inherit;
 }

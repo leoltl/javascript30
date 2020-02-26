@@ -182,6 +182,29 @@
     </li>
   </ul>
 <script>
+  const videosTime = Array.from(document.querySelectorAll('[data-time]'))
+      .reduce((acc, cur) => acc + strToSeconds(cur.dataset.time), 0)
+
+  console.log(secondsToStr(videosTime))
+  console.log(secondsToStr(59))
+
+  
+  function secondsToStr(seconds) {
+
+    let secondsLeft = seconds;
+    const hours = Math.floor(secondsLeft / 3600);
+    secondsLeft = secondsLeft % 3600;
+
+    const mins = Math.floor(secondsLeft / 60);
+    secondsLeft = secondsLeft % 60;
+
+    return `${hours ? `${hours}:` : ""}${mins ? `${mins}:` : ""}${secondsLeft}`
+  }
+
+  function strToSeconds(str) {
+    const [minutes, seconds] = str.split(":")
+    return Number(seconds) + (Number(minutes) * 60)
+  }
 </script>
 </body>
 </html>

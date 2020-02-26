@@ -47,8 +47,24 @@
 
 <script>
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
+console.time()
+const bandLookup = {}
+bands.map(filterArticles).forEach((band,i) => bandLookup[i] = band)
+const result = Object.keys(bands).sort(mySort).map(i => bands[i])
 
-
+document.querySelector('#bands').innerHTML =
+result
+    .map(band => `<li>${band}</li>`)
+    .join('');
+console.timeEnd()
+function mySort(a,b) {
+  if (bandLookup[a] > bandLookup[b]) return 1
+  if (bandLookup[a] < bandLookup[b]) return -1
+  return 0
+}
+function filterArticles(str) {
+  return str.replace('The ',"").replace("An ", "").replace("A ","")
+}
 </script>
 
 </body>
